@@ -1,3 +1,0 @@
-// +build private
-
-package sum
