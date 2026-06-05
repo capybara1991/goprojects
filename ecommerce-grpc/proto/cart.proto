@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package cart;
+
+option go_package = "./gen/cart;cartpb";
+
+service CartService {
+  rpc AddItem(AddItemRequest) returns (AddItemResponse);
+  rpc DeleteItem(DeleteItemRequest) returns (DeleteItemResponse);
+  rpc ListCart(ListCartRequest) returns (ListCartResponse);
+  rpc Checkout(CheckoutRequest) returns (CheckoutResponse);
+}
+
+message AddItemRequest {
+  int64 user_id = 1;
+  uint32 sku = 2;
+  uint32 count = 3;
+}
+
+message AddItemResponse {
+  string message = 1;
+}
+
+message DeleteItemRequest {
+  int64 user_id = 1;
+  uint32 sku = 2;
+}
+
+enum DeleteItemStatus {
+  DELETED = 0;
+  NOTDELETED = 1;
+}
+message DeleteItemResponse {
+  DeleteItemStatus status = 1;
+}
+
+message ListCartRequest {
+  int64 user_id = 1;
+}
+
+message CartItem {
+  uint32 sku = 1;
+  uint32 count = 2;
+  string name = 3;
+  uint64 price = 4;
+}
+
+message ListCartResponse {
+  repeated CartItem items = 1;
+  uint64 total_price = 2;
+}
+
+message CheckoutRequest {
+  int64 user_id = 1;
+}
+
+message CheckoutResponse {
+  int64 order_id = 1;
+}

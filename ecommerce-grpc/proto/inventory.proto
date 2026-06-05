@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package inventory;
+
+option go_package = "./gen/inventory;inventorypb";
+
+service InventoryService {
+  rpc GetStock(GetStockRequest) returns (GetStockResponse);
+  rpc GetProductInfo(GetProductInfoRequest) returns (GetProductInfoResponse);
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc PayOrder(PayOrderRequest) returns (PayOrderResponse);
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+}
+
+enum OrderStatus {
+  ORDER_STATUS_UNKNOWN = 0;
+  ORDER_STATUS_AWAITING_PAYMENT = 1;
+  ORDER_STATUS_PAID = 2;
+  ORDER_STATUS_CANCELLED = 3;
+}
+
+message GetStockRequest {
+  uint32 sku = 1;
+}
+
+message GetStockResponse {
+  uint32 count = 1;
+}
+
+message GetProductInfoRequest {
+  uint32 sku = 1;
+}
+message GetProductInfoResponse {
+  string name = 1;
+  uint64 price = 2;
+}
+message CreateOrderItem {
+  uint32 sku = 1;
+  uint32 count = 2;
+}
+message CreateOrderRequest {
+  int64 user_id = 1;
+  repeated CreateOrderItem item = 2;
+}
+message CreateOrderResponse {
+  int64 order_id = 1;
+}
+message PayOrderRequest {
+  int64 order_id = 1;
+}
+message PayOrderResponse {
+  OrderStatus status = 1;
+}
+message CancelOrderRequest {
+  int64 order_id = 1;
+}
+
+message CancelOrderResponse {
+  OrderStatus status = 1;
+}
